@@ -90,3 +90,35 @@ if st.button("บันทึกการจอง"):
     st.success("บันทึกสำเร็จ")
     st.dataframe(data)
 
+
+#5 Sidebar / menu
+
+menu = st.sidebar.selectbox(
+    "Menu",
+    ["Home","Booking","Dashboard"]
+)
+
+#6 Columns
+
+col1,col2 = st.columns(2)
+
+with col1:
+    st.button("Left")
+
+with col2:
+    st.button("Right")
+
+
+#7. Tabs
+tab1,tab2 = st.tabs(["Booking","History"])
+
+#8. Container
+with st.container():
+    st.write("Booking Container")
+    tab1,tab2 = st.tabs(["Booking","History"])
+
+
+
+
+
+
