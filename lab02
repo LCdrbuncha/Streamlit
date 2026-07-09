@@ -1,0 +1,35 @@
+#Start
+
+1. สร้าง Folder
+2. ลากวางใน vs
+3. New file – main.py
+4. View – terminal
+5. รันใน : pip install streamlit
+
+
+
+#โปรแกรมแรก
+-------------------------------------------------
+import streamlit as st 
+
+st.header("Hello World 👏")
+
+st.write("This is my first app")
+-------------------------------------------------
+
+6. run ใน terminal : streamlit run main.py
+
+#ผลลัพธ์ ------------------------------------------------------------------------------------------
+streamlit run main.py
+2026-07-09 21:11:13.851 Uvicorn server started on :::8501
+
+  You can now view your Streamlit app in your browser.
+
+  Local URL: http://localhost:8501
+  Network URL: http://192.168.1.38:8501
+
+  Help agents write better Streamlit apps?
+  Install the official Streamlit skills by running streamlit skills in your terminal.
+
+#Tags
+7. 
