@@ -1,0 +1,211 @@
+import streamlit as st
+import sqlite3
+import pandas as pd
+
+# ============================
+# Database
+# ============================
+
+def get_connection():
+    return sqlite3.connect("booking.db")
+
+
+def create_table():
+    conn = get_connection()
+
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS booking(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT,
+            room TEXT,
+            booking_date TEXT
+        )
+    """)
+
+    conn.commit()
+    conn.close()
+
+
+create_table()
+
+
+# ============================
+# CRUD Functions
+# ============================
+
+def insert_booking(name, room, date):
+
+    conn = get_connection()
+
+    conn.execute("""
+        INSERT INTO booking(name, room, booking_date)
+        VALUES (?, ?, ?)
+    """, (name, room, date))
+
+    conn.commit()
+    conn.close()
+
+
+def get_booking():
+
+    conn = get_connection()
+
+    df = pd.read_sql(
+        "SELECT * FROM booking",
+        conn
+    )
+
+    conn.close()
+
+    return df
+
+
+def update_booking(id, name, room, date):
+
+    conn = get_connection()
+
+    conn.execute("""
+        UPDATE booking
+        SET
+            name=?,
+            room=?,
+            booking_date=?
+        WHERE id=?
+    """, (name, room, date, id))
+
+    conn.commit()
+    conn.close()
+
+
+def delete_booking(id):
+
+    conn = get_connection()
+
+    conn.execute("""
+        DELETE FROM booking
+        WHERE id=?
+    """, (id,))
+
+    conn.commit()
+    conn.close()
+
+
+# ============================
+# Streamlit UI
+# ============================
+
+st.title("📅 Meeting Room Booking (CRUD + SQLite)")
+
+# -----------------------------
+# CREATE
+# -----------------------------
+
+st.subheader("➕ เพิ่มข้อมูล")
+
+name = st.text_input("ชื่อผู้จอง")
+room = st.selectbox(
+    "ห้องประชุม",
+    ["A", "B", "C"]
+)
+
+date = st.date_input("วันที่จอง")
+
+if st.button("💾 บันทึก"):
+
+    insert_booking(
+        name,
+        room,
+        str(date)
+    )
+
+    st.success("เพิ่มข้อมูลเรียบร้อย")
+    st.rerun()
+
+# -----------------------------
+# READ
+# -----------------------------
+
+st.divider()
+
+st.subheader("📋 รายการจอง")
+
+df = get_booking()
+
+st.dataframe(
+    df,
+    use_container_width=True
+)
+
+# -----------------------------
+# UPDATE
+# -----------------------------
+
+st.divider()
+
+st.subheader("✏️ แก้ไขข้อมูล")
+
+if not df.empty:
+
+    selected_id = st.selectbox(
+        "เลือก ID",
+        df["id"],
+        key="update_id"
+    )
+
+    row = df[df["id"] == selected_id].iloc[0]
+
+    edit_name = st.text_input(
+        "ชื่อ",
+        value=row["name"],
+        key="edit_name"
+    )
+
+    rooms = ["A", "B", "C"]
+
+    edit_room = st.selectbox(
+        "ห้อง",
+        rooms,
+        index=rooms.index(row["room"]),
+        key="edit_room"
+    )
+
+    edit_date = st.text_input(
+        "วันที่",
+        value=row["booking_date"],
+        key="edit_date"
+    )
+
+    if st.button("✅ Update"):
+
+        update_booking(
+            selected_id,
+            edit_name,
+            edit_room,
+            edit_date
+        )
+
+        st.success("อัปเดตข้อมูลเรียบร้อย")
+        st.rerun()
+
+# -----------------------------
+# DELETE
+# -----------------------------
+
+st.divider()
+
+st.subheader("🗑 ลบข้อมูล")
+
+if not df.empty:
+
+    delete_id = st.selectbox(
+        "เลือก ID ที่ต้องการลบ",
+        df["id"],
+        key="delete"
+    )
+
+    if st.button("❌ Delete"):
+
+        delete_booking(delete_id)
+
+        st.success("ลบข้อมูลเรียบร้อย")
+        st.rerun()
