@@ -1,0 +1,92 @@
+ปรับแก้เฉพาะ import และ Add Task
+
+import streamlit as st
+import pandas as pd
+import streamlit.components.v1 as components
+
+
+# -----------------------------
+# Add Task
+# -----------------------------
+def add_task():
+
+    st.header("➕ Add Task")
+
+    # -------------------------
+    # JavaScript Example
+    # -------------------------
+    st.info("JavaScript Example : แสดงจำนวนตัวอักษรที่พิมพ์")
+
+    components.html("""
+
+    <div style="
+        border:1px solid #dddddd;
+        padding:15px;
+        border-radius:10px;
+        background:#f8f9fa;
+    ">
+
+    <label><b>Task Preview (JavaScript)</b></label>
+
+    <input
+        id="taskInput"
+        type="text"
+        placeholder="Type task here..."
+        style="
+            width:95%;
+            padding:8px;
+            margin-top:8px;
+        "
+        onkeyup="countText()"
+    >
+
+    <p id="count">
+        Characters : 0
+    </p>
+
+    <script>
+
+    function countText(){
+
+        let txt =
+            document.getElementById("taskInput").value;
+
+        document.getElementById("count").innerHTML =
+            "Characters : " + txt.length;
+
+    }
+
+    </script>
+
+    </div>
+
+    """, height=170)
+
+    st.divider()
+
+    # -------------------------
+    # Streamlit Form
+    # -------------------------
+
+    task = st.text_input("Task Name")
+
+    status = st.selectbox(
+        "Status",
+        ["Pending", "Done"]
+    )
+
+    if st.button("Save"):
+
+        if task.strip() == "":
+            st.warning("Please enter task")
+            return
+
+        st.session_state.tasks.append({
+
+            "Task": task,
+
+            "Status": status
+
+        })
+
+        st.success("Add Success")
