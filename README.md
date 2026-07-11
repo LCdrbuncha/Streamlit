@@ -1,4 +1,4 @@
-# 🚀 คู่มือการติดตั้ง Streamlit สำหรับผู้เริ่มต้น
+# 1. 🚀 คู่มือการติดตั้ง Streamlit สำหรับผู้เริ่มต้น
 > เริ่มต้นสร้าง Web Application ด้วย **Python + Streamlit**
 
 ---
@@ -411,4 +411,18 @@ http://localhost:8501
 - การเชื่อมต่อฐานข้อมูล SQLite
 - การพัฒนา CRUD Web Application ด้วย Streamlit
 
+
+-----------------------------------------------------------
+
+
+
+
+## 2. 📚 ToDo List Easy
+
+
+- คำสั่งที่ https://github.com/Dr-Buncha-Ch/Streamlit.Begin/tree/main/labEasyTodoList
+- 2.1 โหลด app.py
+- 2.2 โหลด appv2menu.py   ปรับแก้ตาม code4appv2menu.txt
+- 2.3 โหลด appv2menuCSS.py ปรับแก้ตาม cssfile.txt
+- 2.4 โหลด appv2CSSjavaScript.py ปรับแก้ตาม AddTaskJavaScript.txt`
 
